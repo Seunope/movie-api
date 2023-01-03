@@ -1,4 +1,4 @@
-import { QueryInterface } from 'sequelize';
+import { QueryInterface, Sequelize } from 'sequelize';
 
 export default {
   /**
@@ -31,7 +31,145 @@ export default {
    * As a cinema owner I don't want to configure the seating for every show
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  up: (queryInterface: QueryInterface): Promise<void> => {
+  up: (queryInterface: QueryInterface, Sequelize: any): Promise<void> => {
+    queryInterface.createTable('users', {
+      id: {
+        unique: true,
+        primaryKey: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        validate: {
+          isUUID: {
+            args: 4,
+            msg: 'id must be uuid',
+          },
+        },
+      },
+
+      firstName: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      lastName: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      phoneNumber: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      deletedAt: {
+        type: Sequelize.DATE,
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+      },
+    });
+
+    queryInterface.createTable('shows', {
+      id: {
+        unique: true,
+        primaryKey: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        validate: {
+          isUUID: {
+            args: 4,
+            msg: 'id must be uuid',
+          },
+        },
+      },
+      movieId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        unique: true,
+      },
+      name: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      totalSeat: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      availableSeat: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+
+      deletedAt: {
+        type: Sequelize.DATE,
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+      },
+    });
+
+    queryInterface.createTable('movies', {
+      id: {
+        unique: true,
+        primaryKey: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        validate: {
+          isUUID: {
+            args: 4,
+            msg: 'id must be uuid',
+          },
+        },
+      },
+      showId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        unique: true,
+      },
+      name: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      producer: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      movieYear: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      duration: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      status: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+
+      deletedAt: {
+        type: Sequelize.DATE,
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+      },
+    });
     throw new Error('TODO: implement migration in task 4');
   },
 
