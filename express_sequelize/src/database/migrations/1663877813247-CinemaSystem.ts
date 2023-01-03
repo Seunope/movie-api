@@ -31,8 +31,8 @@ export default {
    * As a cinema owner I don't want to configure the seating for every show
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  up: (queryInterface: QueryInterface, Sequelize: any): Promise<void> => {
-    queryInterface.createTable('users', {
+  up: async (queryInterface: QueryInterface, Sequelize: any) => {
+    await queryInterface.createTable('users', {
       id: {
         unique: true,
         primaryKey: true,
@@ -77,7 +77,7 @@ export default {
       },
     });
 
-    queryInterface.createTable('showRooms', {
+    await queryInterface.createTable('showRooms', {
       id: {
         unique: true,
         primaryKey: true,
@@ -126,7 +126,7 @@ export default {
       },
     });
 
-    queryInterface.createTable('movies', {
+    await queryInterface.createTable('movies', {
       id: {
         unique: true,
         primaryKey: true,
@@ -179,7 +179,7 @@ export default {
       },
     });
 
-    queryInterface.createTable('seatReservations', {
+    await queryInterface.createTable('seatReservations', {
       id: {
         unique: true,
         primaryKey: true,
@@ -234,7 +234,7 @@ export default {
       },
     });
 
-    queryInterface.createTable('seatTypes', {
+    await queryInterface.createTable('seatTypes', {
       id: {
         unique: true,
         primaryKey: true,
@@ -281,7 +281,7 @@ export default {
       },
     });
 
-    queryInterface.createTable('movieReservations', {
+    await queryInterface.createTable('movieReservations', {
       id: {
         unique: true,
         primaryKey: true,
@@ -335,12 +335,12 @@ export default {
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  down: (queryInterface: QueryInterface) => {
-    queryInterface.dropTable('users');
-    queryInterface.dropTable('showRooms');
-    queryInterface.dropTable('movies');
-    queryInterface.dropTable('seatReservations');
-    queryInterface.dropTable('seatTypes');
-    queryInterface.dropTable('movieReservations');
+  down: async (queryInterface: QueryInterface) => {
+    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('showRooms');
+    await queryInterface.dropTable('movies');
+    await queryInterface.dropTable('seatReservations');
+    await queryInterface.dropTable('seatTypes');
+    await queryInterface.dropTable('movieReservations');
   },
 };
