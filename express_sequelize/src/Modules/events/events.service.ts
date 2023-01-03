@@ -1,8 +1,6 @@
 import Event from './entities/event.entity';
 
-
 export class EventsService {
-
   async getWarmupEvents() {
     return await Event.findAll();
   }
@@ -85,7 +83,24 @@ export class EventsService {
      */
 
   async getEventsWithWorkshops() {
-    throw new Error('TODO task 1');
+    try {
+      const activeDefaults = await Event.sequelize.query(
+        `
+        SELECT*
+        FROM event
+            `,
+        {
+          // model: models.Default,
+          // type: QueryTypes.SELECT,
+        }
+      );
+      // req.activeDefaults = activeDefaults;
+      // return next();
+      return activeDefaults;
+    } catch (error) {
+      throw error;
+      // winston.log('info', error);
+    }
   }
 
   /* TODO: complete getFutureEventWithWorkshops so that it returns events with workshops, that have not yet started
