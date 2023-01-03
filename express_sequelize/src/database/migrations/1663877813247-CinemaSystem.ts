@@ -46,6 +46,8 @@ export default {
         },
       },
 
+      seatType: Sequelize.ENUM('customer', 'admin'),
+
       firstName: {
         type: Sequelize.STRING,
         allowNull: true,
@@ -75,7 +77,7 @@ export default {
       },
     });
 
-    queryInterface.createTable('shows', {
+    queryInterface.createTable('showRooms', {
       id: {
         unique: true,
         primaryKey: true,
@@ -97,17 +99,22 @@ export default {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      showDate: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       totalSeat: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 0,
+      },
+      isFullBooked: {
+        type: Sequelize.BOOLEAN,
       },
       availableSeat: {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 0,
       },
-
       deletedAt: {
         type: Sequelize.DATE,
       },
@@ -132,22 +139,79 @@ export default {
           },
         },
       },
-      showId: {
+      showRoomId: {
         type: Sequelize.UUID,
         allowNull: false,
         unique: true,
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       producer: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       movieYear: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
+      },
+      duration: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      isFullBooked: {
+        type: Sequelize.BOOLEAN,
+      },
+      showingAt: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      deletedAt: {
+        type: Sequelize.DATE,
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+      },
+    });
+
+    queryInterface.createTable('seatReservations', {
+      id: {
+        unique: true,
+        primaryKey: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        validate: {
+          isUUID: {
+            args: 4,
+            msg: 'id must be uuid',
+          },
+        },
+      },
+      showRoomId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        unique: true,
+      },
+      movieId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        unique: true,
+      },
+      userId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        unique: true,
+      },
+
+      seatTypeId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        unique: true,
       },
       duration: {
         type: Sequelize.FLOAT,
@@ -155,7 +219,53 @@ export default {
         defaultValue: 0,
       },
       status: {
+        type: Sequelize.BOOLEAN,
+        comment: '1 for active movie',
+      },
+
+      deletedAt: {
+        type: Sequelize.DATE,
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+      },
+    });
+
+    queryInterface.createTable('seatTypes', {
+      id: {
+        unique: true,
+        primaryKey: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        validate: {
+          isUUID: {
+            args: 4,
+            msg: 'id must be uuid',
+          },
+        },
+      },
+      showRoomId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        unique: true,
+      },
+
+      seatType: Sequelize.ENUM('single', 'couple', 'VIP'),
+      price: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      numberOfSeat: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      discount: {
+        type: Sequelize.FLOAT,
         allowNull: false,
         defaultValue: 0,
       },
@@ -170,11 +280,67 @@ export default {
         type: Sequelize.DATE,
       },
     });
-    throw new Error('TODO: implement migration in task 4');
+
+    queryInterface.createTable('movieReservations', {
+      id: {
+        unique: true,
+        primaryKey: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        validate: {
+          isUUID: {
+            args: 4,
+            msg: 'id must be uuid',
+          },
+        },
+      },
+      showRoomId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        unique: true,
+      },
+      movieId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        unique: true,
+      },
+      userId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        unique: true,
+      },
+      seatReservationId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        unique: true,
+      },
+      seatNumber: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      status: {
+        type: Sequelize.BOOLEAN,
+      },
+
+      deletedAt: {
+        type: Sequelize.DATE,
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+      },
+    });
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   down: (queryInterface: QueryInterface) => {
-    // do nothing
+    queryInterface.dropTable('users');
+    queryInterface.dropTable('showRooms');
+    queryInterface.dropTable('movies');
+    queryInterface.dropTable('seatReservations');
+    queryInterface.dropTable('seatTypes');
+    queryInterface.dropTable('movieReservations');
   },
 };
