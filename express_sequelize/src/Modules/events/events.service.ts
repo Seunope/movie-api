@@ -83,24 +83,24 @@ export class EventsService {
      */
 
   async getEventsWithWorkshops() {
-    try {
-      const activeDefaults = await Event.sequelize.query(
-        `
-        SELECT*
-        FROM event
-            `,
-        {
-          // model: models.Default,
-          // type: QueryTypes.SELECT,
-        }
-      );
-      // req.activeDefaults = activeDefaults;
-      // return next();
-      return activeDefaults;
-    } catch (error) {
-      throw error;
-      // winston.log('info', error);
-    }
+    // try {
+    //   const activeDefaults = await Event.sequelize.query(
+    //     `
+    //     SELECT*
+    //     FROM event
+    //         `,
+    //     {
+    //       // model: models.Default,
+    //       // type: QueryTypes.SELECT,
+    //     }
+    //   );
+    //   // req.activeDefaults = activeDefaults;
+    //   // return next();
+    //   return activeDefaults;
+    // } catch (error) {
+    //   throw error;
+    //   // winston.log('info', error);
+    // }
   }
 
   /* TODO: complete getFutureEventWithWorkshops so that it returns events with workshops, that have not yet started
